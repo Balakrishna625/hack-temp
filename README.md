@@ -6,79 +6,89 @@ datasets:
 - eltorio/ROCOv2-radiology
 ---
 
-# Model Card for Llama-3.2 11b Vision Medical
+# Model Card – Llama-3.2 11B Vision for Medical Imaging
 
-<img src="https://i5.walmartimages.com/seo/DolliBu-Beige-Llama-Doctor-Plush-Toy-Super-Soft-Stuffed-Animal-Dress-Up-Cute-Scrub-Uniform-Cap-Outfit-Fluffy-Gift-11-Inches_e78392b2-71ef-4e26-a23f-8bb0b0e2043a.70c3b5988d390cf43d799758a826f2a5.jpeg" alt="drawing" width="400"/>
+<img src="https://i5.walmartimages.com/seo/DolliBu-Beige-Llama-Doctor-Plush-Toy-Super-Soft-Stuffed-Animal-Dress-Up-Cute-Scrub-Uniform-Cap-Outfit-Fluffy-Gift-11-Inches_e78392b2-71ef-4e26-a23f-8bb0b0e2043a.70c3b5988d390cf43d799758a826f2a5.jpeg" alt="Llama Doctor Plush" width="400"/>
 
 <font color="FF0000" size="5"><b>
-This is a vision-language model fine-tuned for radiographic image analysis</b></font>
-<br><b>Foundation Model: https://huggingface.co/unsloth/Llama-3.2-11B-Vision-Instruct<br/>
-Dataset: https://huggingface.co/datasets/eltorio/ROCOv2-radiology<br/></b>
+A vision–language model fine-tuned for interpreting radiographic images</b></font><br>
 
-The model has been fine-tuned using CUDA-enabled GPU hardware.
+**Base Model:** [unsloth/Llama-3.2-11B-Vision-Instruct](https://huggingface.co/unsloth/Llama-3.2-11B-Vision-Instruct)  
+**Dataset:** [ROCOv2-radiology](https://huggingface.co/datasets/eltorio/ROCOv2-radiology)  
 
-## Model Details
+The model was trained using **Google Colab Pro with an NVIDIA A100 GPU** and later pushed to the Hugging Face Hub for public access.
 
-The model is based upon the foundation model: unsloth/Llama-3.2-11B-Vision-Instruct.<br/>
-It has been tuned with Supervised Fine-tuning Trainer and PEFT LoRA with vision-language capabilities.
+---
 
-### Libraries
-- unsloth
-- transformers
-- torch
-- datasets
-- trl
-- peft
+##  Model Overview
 
-## Bias, Risks, and Limitations
+Built on top of *unsloth/Llama-3.2-11B-Vision-Instruct*, this version has been fine-tuned using **Supervised Fine-Tuning (SFT)** and **PEFT LoRA** for efficient adaptation to vision–language medical tasks.  
+It is optimized for radiology image captioning and diagnostic-style descriptions.
 
-To optimize training efficiency, the model has been trained on a subset of the ROCOv2-radiology dataset (1/7th of the total dataset).<br/>
+### Core Libraries
+- `unsloth`
+- `transformers`
+- `torch`
+- `datasets`
+- `trl`
+- `peft`
 
+---
+
+##  Bias, Risks & Limitations
+
+The fine-tuning process used **only 1/7th** of the ROCOv2 dataset to reduce compute requirements.  
 <font color="FF0000">
-Users (both direct and downstream) should be made aware of the risks, biases and limitations of the model.<br/>
-The model's performance is directly dependent on the quality and diversity of the training data. Medical diagnosis should always be performed by qualified healthcare professionals.<br/>
-Generation of plausible yet incorrect medical interpretations could occur and should not be used as the sole basis for clinical decisions.
+Outputs should be treated as **assistive** rather than authoritative.  
+Medical professionals must review any AI-generated interpretation before it is acted upon.  
+Model predictions may be incorrect or misleading if the input data differs significantly from the training set.
 </font>
 
-## Training Details
+---
 
-### Training Parameters
-- per_device_train_batch_size = 2
-- gradient_accumulation_steps = 16
-- num_train_epochs = 3
-- learning_rate = 5e-5
-- weight_decay = 0.02
-- lr_scheduler_type = "linear"
-- max_seq_length = 2048
+##  Training Configuration
 
-### LoRA Configuration
-- r = 32
-- lora_alpha = 32
-- lora_dropout = 0
-- bias = "none"
+**Training Parameters**
+- `per_device_train_batch_size`: 2
+- `gradient_accumulation_steps`: 16
+- `num_train_epochs`: 3
+- `learning_rate`: 5e-5
+- `weight_decay`: 0.02
+- `lr_scheduler_type`: "linear"
+- `max_seq_length`: 2048
 
-### Hardware Requirements
-The model was trained using CUDA-enabled GPU hardware.
+**LoRA Settings**
+- `r`: 32
+- `lora_alpha`: 32
+- `lora_dropout`: 0
+- `bias`: "none"
 
-### Training Statistics
-- Training duration: 40,989 seconds (approximately 683 minutes)
-- Peak reserved memory: 12.8 GB
-- Peak reserved memory for training: 3.975 GB
-- Peak reserved memory % of max memory: 32.3%
-- Peak reserved memory for training % of max memory: 10.1%
+**Hardware**
+- Platform: Google Colab Pro  
+- GPU: NVIDIA A100 (40GB) CUDA-enabled
 
-### Training Data
-The model was trained on the ROCOv2-radiology dataset, which contains radiographic images and their corresponding medical descriptions. .
+**Training Stats**
+- Duration: ~40,989 seconds (~683 minutes)
+- Peak reserved memory: 12.8 GB (32.3% of max)
+- Peak memory for training: 3.975 GB (10.1% of max)
 
-The training set was reduced to 1/7th of the original size for computational efficiency.
+---
 
-## Usage
+##  Training Data
 
-The model is designed to provide detailed descriptions of radiographic images. It can be prompted with:
+Dataset: **ROCOv2-radiology** – a collection of radiographic images paired with medical descriptions.  
+Only a subset (2/7th) was used for computational efficiency.
+
+---
+
+##  Usage Example
+
 ```python
-instruction = "You are an expert radiographer. Describe accurately what you see in this image."
+instruction = "You are an expert radiographer. Provide an accurate and detailed description of the medical image."
 ```
 
-## Model Access
+---
 
-The model is available on Hugging Face Hub at: https://huggingface.co/Bala9669/unsloth_finetune
+## Model Availability
+
+Model on Hugging Face: [Bala9669/unsloth_finetune](https://huggingface.co/Bala9669/unsloth_finetune)  
